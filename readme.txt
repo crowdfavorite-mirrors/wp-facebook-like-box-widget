@@ -1,14 +1,13 @@
 === Facebook Like Box Widget ===
 Contributors: sunwu2007
-Tags: facebook, facebook like, facebook badge, facebook button, facebook like button, fb like, like, badge, button, social network, seo, increase traffic, BuddyPress
+Tags: facebook, facebook like, facebook badge, facebook button, facebook like button, fb like, facebook like box, badge, social network, seo, increase traffic, BuddyPress
 Requires at least: 2.8.6
-Tested up to: 3.2.1
+Tested up to: 3.3.1
 Stable tag: trunk
 
 == Description ==
 Facebook Like Box Widget is a social plugin that enables Facebook Page owners to attract and gain Likes & Recommendation Comments from their own website. The Like Box enables users to: see how many users already like this page, and which of their friends like it too, read recent posts from the page and Like the page with one click, without needing to visit the page.
 
-[Vote Our Plugin](http://cmsvoteup.com/joomla-extensions/facebook-like-box-like-recommendation-for-joomla-wordpress/)
 
 == Installation ==
 
@@ -69,6 +68,11 @@ Tested with Wordpress 3.2.1
 
 = v2.2 12.15.2011 =
 Support with Border Color following Facebook Developer update
+
+= v2.3 03.17.2012 =
+Removed support for iFrame per Wordpress Team feedback
+
+
 
 
 

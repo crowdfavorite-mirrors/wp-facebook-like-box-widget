@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Facebook Like Box
- * Version: 2.2
+ * Version: 2.3
  * Plugin URI: http://wordpress.org/extend/plugins/facebook-like-box-widget/
  * Description: Facebook Like Box Widget is a social plugin that enables Facebook Page owners to attract and gain Likes from their own website. The Like Box enables users to: see how many users already like this page, and which of their friends like it too, read recent posts from the page and Like the page with one click, without needing to visit the page.
  * Author: Sunento Agustiar Wu
@@ -29,7 +29,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$title = apply_filters('widget_title', empty($instance['title']) ? 'Facebook Like Box' : $instance['title']);
 		
 		$pluginDisplayType = empty($instance['pluginDisplayType']) ? 'like_box' : $instance['pluginDisplayType'];
-		$layoutMode = empty($instance['layoutMode']) ? 'iframe' : $instance['layoutMode'];
+		$layoutMode = empty($instance['layoutMode']) ? 'xfbml' : $instance['layoutMode'];
                 //example of Page URL : http://www.facebook.com/pages/VivoCiticom-Joomla-Wordpress-Blogger-Drupal-DNN-Community/119691288064264
 		$pageURL = empty($instance['pageURL']) ? '' : $instance['pageURL'];
 		$fblike_button_style = empty($instance['fblike_button_style']) ? 'standard' : $instance['fblike_button_style'];
@@ -49,7 +49,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$borderColor = empty($instance['borderColor']) ? 'AAAAAA' : $instance['borderColor'];
 		$showFaces = empty($instance['showFaces']) ? 'yes' : $instance['showFaces'];
 		$header = empty($instance['header']) ? 'yes' : $instance['header'];
-		$creditOn = empty($instance['creditOn']) ? 'yes' : $instance['creditOn'];
+		$creditOn = empty($instance['creditOn']) ? 'no' : $instance['creditOn'];
 		$sharePlugin = "http://vivociti.com";
 		
 		if ($fblike_button_showFaces == "yes") {
@@ -96,7 +96,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$like_button_xfbml  = "<script src=\"http://connect.facebook.net/en_US/all.js#xfbml=1\"></script><fb:like layout=\"$fblike_button_style\" show_faces=\"$fblike_button_showFaces\" width=\"$fblike_button_width\" action=\"$fblike_button_verb_to_display\" font=\"$fblike_button_font\" colorscheme=\"$fblike_button_colorScheme\"></fb:like>";
 		$html = ""; 
 		$img_live_dir = 'http://www.cmsvoteup.com/images/power_by_2x2.gif';
-		$html = "<a href=\"http://cmsvoteup.com/joomla-extensions/facebook-like-box-like-recommendation-for-joomla-wordpress/\" title=\"Free Facebook Like Box for Wordpress\" target=\"_blank\"><img src=\"$img_live_dir\" border=\"0\"/></a>"; 
+		$html = "<div><a href=\"http://cmsvoteup.com/joomla-extensions/facebook-like-box-like-recommendation-for-joomla-wordpress/\" title=\"Vote for this Free Facebook Like Box for Wordpress\" target=\"_blank\">*</a></div>"; 
 
 		switch ($pluginDisplayType) {
 			case 'like_box' :
@@ -167,12 +167,12 @@ class FacebookLikeBoxWidget extends WP_Widget
 	*/
 	function form($instance){
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array('title'=>'', 'pageID'=>'119691288064264', 'height'=>'255', 'width'=>'292', 'connection'=>'10', 'streams'=>'yes', 'colorScheme'=>'light', 'showFaces'=>'yes', 'borderColor'=>'AAAAAA','header'=>'yes', 'creditOn'=>'yes', 'pluginDisplayType'=>'like_box', 'layoutMode'=>'iframe', 'pageURL'=>'http://www.facebook.com/pages/VivoCiticom-Joomla-Wordpress-Blogger-Drupal-DNN-Community/119691288064264', 'fblike_button_style'=>'standard', 'fblike_button_showFaces'=>'false','fblike_button_verb_to_display'=>'recommend','fblike_button_font'=>'arial', 'fblike_button_width'=>'292','fblike_button_colorScheme'=>'light') );
+		$instance = wp_parse_args( (array) $instance, array('title'=>'', 'pageID'=>'119691288064264', 'height'=>'255', 'width'=>'292', 'connection'=>'10', 'streams'=>'yes', 'colorScheme'=>'light', 'showFaces'=>'yes', 'borderColor'=>'AAAAAA','header'=>'yes', 'creditOn'=>'no', 'pluginDisplayType'=>'like_box', 'layoutMode'=>'xfbml', 'pageURL'=>'http://www.facebook.com/pages/VivoCiticom-Joomla-Wordpress-Blogger-Drupal-DNN-Community/119691288064264', 'fblike_button_style'=>'standard', 'fblike_button_showFaces'=>'false','fblike_button_verb_to_display'=>'recommend','fblike_button_font'=>'arial', 'fblike_button_width'=>'292','fblike_button_colorScheme'=>'light') );
 		
 		
 		$title = htmlspecialchars($instance['title']);		
 		$pluginDisplayType = empty($instance['pluginDisplayType']) ? 'like_box' : $instance['pluginDisplayType'];
-		$layoutMode = empty($instance['layoutMode']) ? 'iframe' : $instance['layoutMode'];
+		$layoutMode = empty($instance['layoutMode']) ? 'xfbml' : $instance['layoutMode'];
 		$pageURL = empty($instance['pageURL']) ? 'http://www.facebook.com/pages/...' : $instance['pageURL'];
 		$fblike_button_style = empty($instance['fblike_button_style']) ? 'standard' : $instance['fblike_button_style'];
 		$fblike_button_showFaces = empty($instance['fblike_button_showFaces']) ? 'no' : $instance['fblike_button_showFaces'];
@@ -189,7 +189,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$borderColor = empty($instance['borderColor']) ? 'AAAAAA' : $instance['borderColor'];
 		$showFaces = empty($instance['showFaces']) ? 'yes' : $instance['showFaces'];
 		$header = empty($instance['header']) ? 'yes' : $instance['header'];
-		$creditOn = empty($instance['creditOn']) ? 'yes' : $instance['creditOn'];
+		$creditOn = empty($instance['creditOn']) ? 'no' : $instance['creditOn'];
 		$sharePlugin = "http://vivociti.com";
 		
 		$pageID = htmlspecialchars($instance['pageID']);
@@ -226,7 +226,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 		# Fill Layout Mode Selection
 		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('layoutMode') . '">' . __('Render Mode:') . ' <select name="' . $this->get_field_name('layoutMode')  . '" id="' . $this->get_field_id('layoutMode')  . '">"';
 ?>
-		<option value="iframe" <?php if ($layoutMode == 'iframe') echo 'selected="yes"'; ?> >IFRAME</option>
+		<!--- <option value="iframe" <?php if ($layoutMode == 'iframe') echo 'selected="yes"'; ?> >IFRAME</option> --->
 		<option value="xfbml" <?php if ($layoutMode == 'xfbml') echo 'selected="yes"'; ?> >XFBML</option>		
 <?php
 		echo '</select></label>';
@@ -322,7 +322,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 		echo '<p/>';
 		echo '<hr/>';
 		# Fill Author Credit : option to select YEs or No 
-		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('creditOn') . '">' . __('Support Our Development by contributing money via PayPal at http://bit.ly/9Njzpo - No (Credit Author by small link)') . ' <select name="' . $this->get_field_name('creditOn')  . '" id="' . $this->get_field_id('creditOn')  . '">"';
+		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('creditOn') . '">' . __('Select Yes to support Development by contributing money via PayPal at http://bit.ly/9Njzpo Or Dont Show Credit - Select No to credit Author by small link back to author website.') . ' <select name="' . $this->get_field_name('creditOn')  . '" id="' . $this->get_field_id('creditOn')  . '">"';
 ?>
 		<option value="no" <?php if ($creditOn == 'no') echo 'selected="yes"'; ?> >Yes</option>
 		<option value="yes" <?php if ($creditOn == 'yes') echo 'selected="yes"'; ?> >No</option>			 
