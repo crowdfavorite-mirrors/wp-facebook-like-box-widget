@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Facebook Like Box
- * Version: 2.3
+ * Version: 2.4
  * Plugin URI: http://wordpress.org/extend/plugins/facebook-like-box-widget/
  * Description: Facebook Like Box Widget is a social plugin that enables Facebook Page owners to attract and gain Likes from their own website. The Like Box enables users to: see how many users already like this page, and which of their friends like it too, read recent posts from the page and Like the page with one click, without needing to visit the page.
  * Author: Sunento Agustiar Wu
@@ -26,8 +26,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 	*/
 	function widget($args, $instance){
 		extract($args);
-		$title = apply_filters('widget_title', empty($instance['title']) ? 'Facebook Like Box' : $instance['title']);
-		
+		$title = apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title']);		
 		$pluginDisplayType = empty($instance['pluginDisplayType']) ? 'like_box' : $instance['pluginDisplayType'];
 		$layoutMode = empty($instance['layoutMode']) ? 'xfbml' : $instance['layoutMode'];
                 //example of Page URL : http://www.facebook.com/pages/VivoCiticom-Joomla-Wordpress-Blogger-Drupal-DNN-Community/119691288064264
@@ -47,6 +46,9 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$streams = empty($instance['streams']) ? 'yes' : $instance['streams'];
 		$colorScheme = empty($instance['colorScheme']) ? 'light' : $instance['colorScheme'];
 		$borderColor = empty($instance['borderColor']) ? 'AAAAAA' : $instance['borderColor'];
+		$enableOtherSocialButtons = empty($instance['enableOtherSocialButtons']) ? 'no' : $instance['enableOtherSocialButtons'];
+		$addThisVerticalStyle = empty($instance['addThisVerticalStyle']) ? '1' : $instance['addThisVerticalStyle'];
+		$addThisPubId = empty($instance['addThisPubId']) ? '' : $instance['addThisPubId'];
 		$showFaces = empty($instance['showFaces']) ? 'yes' : $instance['showFaces'];
 		$header = empty($instance['header']) ? 'yes' : $instance['header'];
 		$creditOn = empty($instance['creditOn']) ? 'no' : $instance['creditOn'];
@@ -120,9 +122,54 @@ class FacebookLikeBoxWidget extends WP_Widget
 		}
 		echo $renderedHTML;
 		
-	if ($creditOn == "yes") {
+		if ($creditOn == "yes") {
             echo $html;
         }
+		
+		if ($enableOtherSocialButtons == "yes") {
+			switch ($addThisVerticalStyle) {
+			case '1' :
+				echo "
+				<!-- AddThis Button BEGIN -->
+				<div class=\"addthis_toolbox addthis_floating_style addthis_counter_style\" style=\"left:50px;top:50px;\">
+				<a class=\"addthis_button_facebook_like\" fb:like:layout=\"box_count\"></a>
+				<a class=\"addthis_button_tweet\" tw:count=\"vertical\"></a>
+				<a class=\"addthis_button_google_plusone\" g:plusone:size=\"tall\"></a>
+				<a class=\"addthis_counter\"></a>
+				</div>
+				<script type=\"text/javascript\" src=\"http://s7.addthis.com/js/250/addthis_widget.js#pubid=$addThisPubId\"></script>
+				<!-- AddThis Button END -->";
+				break;
+			case '2' :
+				echo "
+				<!-- AddThis Button BEGIN -->
+				<div class=\"addthis_toolbox addthis_floating_style addthis_32x32_style\" style=\"left:50px;top:50px;\">
+				<a class=\"addthis_button_preferred_1\"></a>
+				<a class=\"addthis_button_preferred_2\"></a>
+				<a class=\"addthis_button_preferred_3\"></a>
+				<a class=\"addthis_button_preferred_4\"></a>
+				<a class=\"addthis_button_compact\"></a>
+				</div>
+				<script type=\"text/javascript\" src=\"http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-$addThisPubId\"></script>
+				<!-- AddThis Button END -->
+				";
+				break;
+			case '3':
+				echo "
+				<!-- AddThis Button BEGIN -->
+				<div class=\"addthis_toolbox addthis_floating_style addthis_16x16_style\" style=\"left:50px;top:50px;\">
+				<a class=\"addthis_button_preferred_1\"></a>
+				<a class=\"addthis_button_preferred_2\"></a>
+				<a class=\"addthis_button_preferred_3\"></a>
+				<a class=\"addthis_button_preferred_4\"></a>
+				<a class=\"addthis_button_compact\"></a>
+				</div>
+				<script type=\"text/javascript\" src=\"http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-$addThisPubId\"></script>
+				<!-- AddThis Button END -->
+				";
+				break;
+		}
+     }
 	
 	//end of creditOn is yes
 
@@ -146,6 +193,9 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$instance['streams'] = strip_tags(stripslashes($new_instance['streams']));   //thanks to : Krzysztof Piech <chrisx29a@gmail.com>
 		$instance['colorScheme'] = strip_tags(stripslashes($new_instance['colorScheme']));
 		$instance['borderColor'] = strip_tags(stripslashes($new_instance['borderColor']));
+		$instance['enableOtherSocialButtons'] = strip_tags(stripslashes($new_instance['enableOtherSocialButtons']));
+		$instance['addThisVerticalStyle'] = strip_tags(stripslashes($new_instance['addThisVerticalStyle']));
+		$instance['addThisPubId'] = strip_tags(stripslashes($new_instance['addThisPubId']));
 		$instance['showFaces'] = strip_tags(stripslashes($new_instance['showFaces']));
 		
 		$instance['pluginDisplayType'] = strip_tags(stripslashes($new_instance['pluginDisplayType']));
@@ -167,7 +217,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 	*/
 	function form($instance){
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array('title'=>'', 'pageID'=>'119691288064264', 'height'=>'255', 'width'=>'292', 'connection'=>'10', 'streams'=>'yes', 'colorScheme'=>'light', 'showFaces'=>'yes', 'borderColor'=>'AAAAAA','header'=>'yes', 'creditOn'=>'no', 'pluginDisplayType'=>'like_box', 'layoutMode'=>'xfbml', 'pageURL'=>'http://www.facebook.com/pages/VivoCiticom-Joomla-Wordpress-Blogger-Drupal-DNN-Community/119691288064264', 'fblike_button_style'=>'standard', 'fblike_button_showFaces'=>'false','fblike_button_verb_to_display'=>'recommend','fblike_button_font'=>'arial', 'fblike_button_width'=>'292','fblike_button_colorScheme'=>'light') );
+		$instance = wp_parse_args( (array) $instance, array('title'=>'', 'pageID'=>'119691288064264', 'height'=>'255', 'width'=>'292', 'connection'=>'10', 'streams'=>'yes', 'colorScheme'=>'light', 'showFaces'=>'yes', 'borderColor'=>'AAAAAA','enableOtherSocialButtons'=>'no', 'addThisVerticalStyle'=>'1', 'addThisPubId'=>'', 'header'=>'yes', 'creditOn'=>'no', 'pluginDisplayType'=>'like_box', 'layoutMode'=>'xfbml', 'pageURL'=>'http://www.facebook.com/pages/VivoCiticom-Joomla-Wordpress-Blogger-Drupal-DNN-Community/119691288064264', 'fblike_button_style'=>'standard', 'fblike_button_showFaces'=>'false','fblike_button_verb_to_display'=>'recommend','fblike_button_font'=>'arial', 'fblike_button_width'=>'292','fblike_button_colorScheme'=>'light') );
 		
 		
 		$title = htmlspecialchars($instance['title']);		
@@ -187,6 +237,9 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$streams = empty($instance['streams']) ? 'yes' : $instance['streams'];
 		$colorScheme = empty($instance['colorScheme']) ? 'yes' : $instance['colorScheme'];
 		$borderColor = empty($instance['borderColor']) ? 'AAAAAA' : $instance['borderColor'];
+		$enableOtherSocialButtons = empty($instance['enableOtherSocialButtons']) ? 'no' : $instance['enableOtherSocialButtons'];
+		$addThisVerticalStyle = empty($instance['addThisVerticalStyle']) ? '1' : $instance['addThisVerticalStyle'];
+		$addThisPubId = empty($instance['addThisPubId']) ? '' : $instance['addThisPubId'];
 		$showFaces = empty($instance['showFaces']) ? 'yes' : $instance['showFaces'];
 		$header = empty($instance['header']) ? 'yes' : $instance['header'];
 		$creditOn = empty($instance['creditOn']) ? 'no' : $instance['creditOn'];
@@ -197,6 +250,9 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$streams = htmlspecialchars($instance['streams']);
 		$colorScheme = htmlspecialchars($instance['colorScheme']);
 		$borderColor = htmlspecialchars($instance['borderColor']);
+		$enableOtherSocialButtons = htmlspecialchars($instance['enableOtherSocialButtons']);
+		$addThisVerticalStyle = htmlspecialchars($instance['addThisVerticalStyle']);
+		$addThisPubId = htmlspecialchars($instance['addThisPubId']);
 		$showFaces = htmlspecialchars($instance['showFaces']);
 		$header = htmlspecialchars($instance['header']);
 		$creditOn = htmlspecialchars($instance['creditOn']);
@@ -317,6 +373,27 @@ class FacebookLikeBoxWidget extends WP_Widget
 <?php
 		echo '</select></label>';
 		
+		#Enable Other Social Network Settings Section
+		echo '<hr/><p style="text-align:left;"><b>Google+, Twitter, Pinterest Floating Buttons</b><br/>Powered By AddThis.com</p>';
+		# Fill Enable Other Social Buttons Selection
+		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('enableOtherSocialButtons') . '">' . __('Enable Other Social Buttons:') . ' <select name="' . $this->get_field_name('enableOtherSocialButtons')  . '" id="' . $this->get_field_id('enableOtherSocialButtons')  . '">"';
+?>
+		<option value="yes" <?php if ($enableOtherSocialButtons == 'yes') echo 'selected="yes"'; ?> >Yes</option>
+		<option value="no" <?php if ($enableOtherSocialButtons == 'no') echo 'selected="yes"'; ?> >No</option>				
+<?php
+		echo '</select></label>';
+		
+		# Fill Social Buttons Style Selection
+		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('addThisVerticalStyle') . '">' . __('Choose Vertical Floating Style:') . ' <select name="' . $this->get_field_name('addThisVerticalStyle')  . '" id="' . $this->get_field_id('addThisVerticalStyle')  . '">"';
+?>
+		<option value="1" <?php if ($enableOtherSocialButtons == '1') echo 'selected="yes"'; ?> >1 - Floating On The Left</option>
+		<option value="2" <?php if ($enableOtherSocialButtons == '2') echo 'selected="yes"'; ?> >2- Floating On The Left</option>				
+		<option value="3" <?php if ($enableOtherSocialButtons == '3') echo 'selected="yes"'; ?> >3 - Floating On The Left</option>				
+<?php
+		echo '</select></label>';
+		
+		# AddThis Publishere Id
+		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('addThisPubId') . '">' . __('AddThis Pub Id:') . ' <input style="width: 100px;" id="' . $this->get_field_id('addThisPubId') . '" name="' . $this->get_field_name('addThisPubId') . '" type="text" value="' . $addThisPubId . '" /></label></p>';
 		
 		echo '<p style="text-align:left;"><a title="Join Us @Facebook" href="http://www.facebook.com/pages/VivoCiticom-Joomla-Wordpress-Blogger-Drupal-DNN-Community/119691288064264" target="_blank"><img src="http://vivociti.com/images/stories/facebook_16x16.png" border="0"></a>&nbsp;<a href="https://plus.google.com/100723813888588053339?prsrc=3" style="text-decoration:none;"><img src="https://ssl.gstatic.com/images/icons/gplus-16.png" alt="" style="border:0;width:16px;height:16px;"/></a>&nbsp;<a title="Follow Us @Twitter" href="http://twitter.com/vivociti" target="_blank"><img src="http://vivociti.com/images/stories/twitter_16x16.png" border="0"></a>&nbsp;<a title="Follow Us @Digg" href="http://digg.com/vivoc" target="_blank"><img src="http://vivociti.com/images/stories/digg_16x16.png" border="0"></a>&nbsp;<a title="Follow Us @StumbleUpon" href="http://www.stumbleupon.com/stumbler/vivociti/" target="_blank"><img src="http://vivociti.com/images/stories/stumbleupon_16x16.png" border="0"></a>&nbsp;<a title="Follow Our RSS" href="http://feeds2.feedburner.com/vivociti" target="_blank"><img src="http://vivociti.com/images/stories/feed_16x16.png" border="0"></a></p>';
 		echo '<p/>';

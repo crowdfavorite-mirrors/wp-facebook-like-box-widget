@@ -2,7 +2,7 @@
 Contributors: sunwu2007
 Tags: facebook, facebook like, facebook badge, facebook button, facebook like button, fb like, facebook like box, badge, social network, seo, increase traffic, BuddyPress
 Requires at least: 2.8.6
-Tested up to: 3.3.1
+Tested up to: 3.4.1
 Stable tag: trunk
 
 == Description ==
@@ -30,6 +30,7 @@ or visit author website for Facebook Like Box tutorial.
 1. Wordpress Admin Setting
 2. Wordpress Front Page Display (with streams)
 3. Wordpress Front Page Display (no streams)
+4. Now you can enable additional social network buttons such as Pinterest, Twitter, Google+ and it is floating on the left side (default is set to No). It is powered by AddThis.com.
 
 == Changelog ==
 
@@ -71,6 +72,11 @@ Support with Border Color following Facebook Developer update
 
 = v2.3 03.17.2012 =
 Removed support for iFrame per Wordpress Team feedback
+
+= v2.4 08.05.2012 =
+* Now you can enable additional social network buttons such as Pinterest, Twitter, Google+ and it is floating on the left side (default is set to No).
+* Leave Title field blank will not show default title anymore
+
 
 
 
