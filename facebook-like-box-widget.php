@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Facebook Like Box
- * Version: 2.4
+ * Version: 2.6
  * Plugin URI: http://wordpress.org/extend/plugins/facebook-like-box-widget/
  * Description: Facebook Like Box Widget is a social plugin that enables Facebook Page owners to attract and gain Likes from their own website. The Like Box enables users to: see how many users already like this page, and which of their friends like it too, read recent posts from the page and Like the page with one click, without needing to visit the page.
  * Author: Sunento Agustiar Wu
@@ -51,7 +51,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$addThisPubId = empty($instance['addThisPubId']) ? '' : $instance['addThisPubId'];
 		$showFaces = empty($instance['showFaces']) ? 'yes' : $instance['showFaces'];
 		$header = empty($instance['header']) ? 'yes' : $instance['header'];
-		$creditOn = empty($instance['creditOn']) ? 'no' : $instance['creditOn'];
+		//$creditOn = empty($instance['creditOn']) ? 'no' : $instance['creditOn'];
 		$sharePlugin = "http://vivociti.com";
 		
 		if ($fblike_button_showFaces == "yes") {
@@ -122,9 +122,10 @@ class FacebookLikeBoxWidget extends WP_Widget
 		}
 		echo $renderedHTML;
 		
+		/*
 		if ($creditOn == "yes") {
             echo $html;
-        }
+        } */
 		
 		if ($enableOtherSocialButtons == "yes") {
 			switch ($addThisVerticalStyle) {
@@ -242,7 +243,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$addThisPubId = empty($instance['addThisPubId']) ? '' : $instance['addThisPubId'];
 		$showFaces = empty($instance['showFaces']) ? 'yes' : $instance['showFaces'];
 		$header = empty($instance['header']) ? 'yes' : $instance['header'];
-		$creditOn = empty($instance['creditOn']) ? 'no' : $instance['creditOn'];
+		//$creditOn = empty($instance['creditOn']) ? 'no' : $instance['creditOn'];
 		$sharePlugin = "http://vivociti.com";
 		
 		$pageID = htmlspecialchars($instance['pageID']);
@@ -255,7 +256,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$addThisPubId = htmlspecialchars($instance['addThisPubId']);
 		$showFaces = htmlspecialchars($instance['showFaces']);
 		$header = htmlspecialchars($instance['header']);
-		$creditOn = htmlspecialchars($instance['creditOn']);
+		//$creditOn = htmlspecialchars($instance['creditOn']);
 		
 		$pluginDisplayType = htmlspecialchars($instance['pluginDisplayType']);
 		$layoutMode = htmlspecialchars($instance['layoutMode']);
@@ -387,7 +388,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('addThisVerticalStyle') . '">' . __('Choose Vertical Floating Style:') . ' <select name="' . $this->get_field_name('addThisVerticalStyle')  . '" id="' . $this->get_field_id('addThisVerticalStyle')  . '">"';
 ?>
 		<option value="1" <?php if ($enableOtherSocialButtons == '1') echo 'selected="yes"'; ?> >1 - Floating On The Left</option>
-		<option value="2" <?php if ($enableOtherSocialButtons == '2') echo 'selected="yes"'; ?> >2- Floating On The Left</option>				
+		<option value="2" <?php if ($enableOtherSocialButtons == '2') echo 'selected="yes"'; ?> >2- Floating On The Right</option>				
 		<option value="3" <?php if ($enableOtherSocialButtons == '3') echo 'selected="yes"'; ?> >3 - Floating On The Left</option>				
 <?php
 		echo '</select></label>';
@@ -399,12 +400,10 @@ class FacebookLikeBoxWidget extends WP_Widget
 		echo '<p/>';
 		echo '<hr/>';
 		# Fill Author Credit : option to select YEs or No 
-		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('creditOn') . '">' . __('Select Yes to support Development by contributing money via PayPal at http://bit.ly/9Njzpo Or Dont Show Credit - Select No to credit Author by small link back to author website.') . ' <select name="' . $this->get_field_name('creditOn')  . '" id="' . $this->get_field_id('creditOn')  . '">"';
+		echo '<p style="text-align:right;">You can optionally support my development work contributing via <a href="http://bit.ly/9Njzpo" target="_blank">PayPal</a>';
 ?>
-		<option value="no" <?php if ($creditOn == 'no') echo 'selected="yes"'; ?> >Yes</option>
-		<option value="yes" <?php if ($creditOn == 'yes') echo 'selected="yes"'; ?> >No</option>			 
 <?php
-		echo '</select></label>';
+		echo '</p>';
 		echo '<p style="text-align:left;">Our other Wordpress Widget you may like is:<br/>
 		<ul>
 		  <li><a title="Google +1 Button" href="http://wordpress.org/extend/plugins/google-1-recommend-button-for-wordpress/" target="_blank">Google +1 Button</a></li>
