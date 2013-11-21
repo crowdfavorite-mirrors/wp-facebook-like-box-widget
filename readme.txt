@@ -3,7 +3,7 @@ Contributors: sunwu2007
 Donate link: http://bit.ly/9Njzpo
 Tags: facebook, facebook like, facebook badge, facebook button, facebook like button, fb like, facebook like box, badge, social network, seo, increase traffic, BuddyPress
 Requires at least: 2.8.6
-Tested up to: 3.5.2
+Tested up to: 3.7.1
 Stable tag: trunk
 
 == Description ==
@@ -28,10 +28,13 @@ or visit author website for Facebook Like Box tutorial.
 
 == Screenshots ==
 
-1. Wordpress Admin Setting
-2. Wordpress Front Page Display (with streams)
-3. Wordpress Front Page Display (no streams)
-4. Now you can enable additional social network buttons such as Pinterest, Twitter, Google+ and it is floating on the left side (default is set to No). It is powered by AddThis.com.
+1. Wordpress Admin Setting for Facebook Like Box 
+2. Wordpress Admin Setting for Integration to display Social Network Buttons (Default is NO)
+3. Wordpress Admin Setting for Integration to display Twitter Counter & Twitter Signature (Default is NO) 
+4. Wordpress Front Page Display (with streams)
+5. Wordpress Front Page Display (no streams)
+6. Now you can enable additional social network buttons such as Pinterest, Twitter, Google+ and it is floating on the left or right side with 6 styles for you to choose (default is set to No). It is powered by AddThis.com.
+7. From Version 2.7 now another additional integration to display Twitter Counter & Twitter Signature from your Twitter profile. Can be positioned before or after Facebook Like Box & Facebook Like Button
 
 == Changelog ==
 
@@ -84,12 +87,8 @@ Removed support for iFrame per Wordpress Team feedback
 = v2.6 09.10.2013 =
 * Remove minor option from Setting per Wordpress Plugin Team feedback
 
-
-
-
-
-
-
-
-
-
+= v2.7 11.19.2013 =
+* Fix minor bug for Social Buttons from AddThis Integration
+* Add 3 more styles for floating Social Buttons 
+* Enhance with Twitter Signature & Twitter Counter & Twitter Follow QR Code Integration
+* Tested with Wordpress 3.7.1

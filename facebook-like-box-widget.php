@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Facebook Like Box
- * Version: 2.6
+ * Version: 2.7
  * Plugin URI: http://wordpress.org/extend/plugins/facebook-like-box-widget/
  * Description: Facebook Like Box Widget is a social plugin that enables Facebook Page owners to attract and gain Likes from their own website. The Like Box enables users to: see how many users already like this page, and which of their friends like it too, read recent posts from the page and Like the page with one click, without needing to visit the page.
  * Author: Sunento Agustiar Wu
@@ -47,8 +47,12 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$colorScheme = empty($instance['colorScheme']) ? 'light' : $instance['colorScheme'];
 		$borderColor = empty($instance['borderColor']) ? 'AAAAAA' : $instance['borderColor'];
 		$enableOtherSocialButtons = empty($instance['enableOtherSocialButtons']) ? 'no' : $instance['enableOtherSocialButtons'];
+		$enableTwitterButtons = empty($instance['enableTwitterButtons']) ? 'no' : $instance['enableTwitterButtons'];
 		$addThisVerticalStyle = empty($instance['addThisVerticalStyle']) ? '1' : $instance['addThisVerticalStyle'];
+		$twitterButtonStyle = empty($instance['twitterButtonStyle']) ? '127' : $instance['twitterButtonStyle'];
+		$enableAfterOrBeforeFBLikeBox = empty($instance['enableAfterOrBeforeFBLikeBox']) ? 'before' : $instance['enableAfterOrBeforeFBLikeBox'];
 		$addThisPubId = empty($instance['addThisPubId']) ? '' : $instance['addThisPubId'];
+		$twitterUsername = empty($instance['twitterUsername']) ? '' : $instance['twitterUsername'];
 		$showFaces = empty($instance['showFaces']) ? 'yes' : $instance['showFaces'];
 		$header = empty($instance['header']) ? 'yes' : $instance['header'];
 		//$creditOn = empty($instance['creditOn']) ? 'no' : $instance['creditOn'];
@@ -100,6 +104,9 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$img_live_dir = 'http://www.cmsvoteup.com/images/power_by_2x2.gif';
 		$html = "<div><a href=\"http://cmsvoteup.com/joomla-extensions/facebook-like-box-like-recommendation-for-joomla-wordpress/\" title=\"Vote for this Free Facebook Like Box for Wordpress\" target=\"_blank\">*</a></div>"; 
 
+		if ( ($enableTwitterButtons == "yes") && ($enableAfterOrBeforeFBLikeBox == "before") ){
+			echo '<a href="http://twitter.com/' . $twitterUserName . '" title="Follow ' . $twitterUserName . ' "><img src="http://twithut.com/twitsigs/' . $twitterButtonStyle . '/' . $twitterUserName . '.png' .   '" border=0></a>';
+		}
 		switch ($pluginDisplayType) {
 			case 'like_box' :
 				if (strcmp($layoutMode, "iframe") == 0) {
@@ -121,6 +128,10 @@ class FacebookLikeBoxWidget extends WP_Widget
 				break;
 		}
 		echo $renderedHTML;
+		
+		if ( ($enableTwitterButtons == "yes") && ($enableAfterOrBeforeFBLikeBox == "after") ){
+			echo '<a href="http://twitter.com/' . $twitterUserName . '" title="Follow ' . $twitterUserName . ' "><img src="http://twithut.com/twitsigs/' . $twitterButtonStyle . '/' . $twitterUserName . '.png' .   '" border=0></a>';
+		}
 		
 		/*
 		if ($creditOn == "yes") {
@@ -169,6 +180,46 @@ class FacebookLikeBoxWidget extends WP_Widget
 				<!-- AddThis Button END -->
 				";
 				break;
+			case '4' :
+				echo "
+				<!-- AddThis Button BEGIN -->
+				<div class=\"addthis_toolbox addthis_floating_style addthis_counter_style\" style=\"right:50px;top:50px;\">
+				<a class=\"addthis_button_facebook_like\" fb:like:layout=\"box_count\"></a>
+				<a class=\"addthis_button_tweet\" tw:count=\"vertical\"></a>
+				<a class=\"addthis_button_google_plusone\" g:plusone:size=\"tall\"></a>
+				<a class=\"addthis_counter\"></a>
+				</div>
+				<script type=\"text/javascript\" src=\"http://s7.addthis.com/js/250/addthis_widget.js#pubid=$addThisPubId\"></script>
+				<!-- AddThis Button END -->";
+				break;
+			case '5' :
+				echo "
+				<!-- AddThis Button BEGIN -->
+				<div class=\"addthis_toolbox addthis_floating_style addthis_32x32_style\" style=\"right:50px;top:50px;\">
+				<a class=\"addthis_button_preferred_1\"></a>
+				<a class=\"addthis_button_preferred_2\"></a>
+				<a class=\"addthis_button_preferred_3\"></a>
+				<a class=\"addthis_button_preferred_4\"></a>
+				<a class=\"addthis_button_compact\"></a>
+				</div>
+				<script type=\"text/javascript\" src=\"http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-$addThisPubId\"></script>
+				<!-- AddThis Button END -->
+				";
+				break;
+			case '6':
+				echo "
+				<!-- AddThis Button BEGIN -->
+				<div class=\"addthis_toolbox addthis_floating_style addthis_16x16_style\" style=\"right:50px;top:50px;\">
+				<a class=\"addthis_button_preferred_1\"></a>
+				<a class=\"addthis_button_preferred_2\"></a>
+				<a class=\"addthis_button_preferred_3\"></a>
+				<a class=\"addthis_button_preferred_4\"></a>
+				<a class=\"addthis_button_compact\"></a>
+				</div>
+				<script type=\"text/javascript\" src=\"http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-$addThisPubId\"></script>
+				<!-- AddThis Button END -->
+				";
+				break;
 		}
      }
 	
@@ -196,9 +247,11 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$instance['borderColor'] = strip_tags(stripslashes($new_instance['borderColor']));
 		$instance['enableOtherSocialButtons'] = strip_tags(stripslashes($new_instance['enableOtherSocialButtons']));
 		$instance['addThisVerticalStyle'] = strip_tags(stripslashes($new_instance['addThisVerticalStyle']));
+		$instance['enableTwitterButtons'] = strip_tags(stripslashes($new_instance['enableTwitterButtons']));
+		$instance['twitterButtonStyle'] = strip_tags(stripslashes($new_instance['twitterButtonStyle']));		
 		$instance['addThisPubId'] = strip_tags(stripslashes($new_instance['addThisPubId']));
-		$instance['showFaces'] = strip_tags(stripslashes($new_instance['showFaces']));
-		
+		$instance['twitterUsername'] = strip_tags(stripslashes($new_instance['twitterUsername']));
+		$instance['showFaces'] = strip_tags(stripslashes($new_instance['showFaces']));		
 		$instance['pluginDisplayType'] = strip_tags(stripslashes($new_instance['pluginDisplayType']));
 		$instance['layoutMode'] = strip_tags(stripslashes($new_instance['layoutMode']));
 		$instance['pageURL'] = strip_tags(stripslashes($new_instance['pageURL']));
@@ -218,8 +271,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 	*/
 	function form($instance){
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array('title'=>'', 'pageID'=>'119691288064264', 'height'=>'255', 'width'=>'292', 'connection'=>'10', 'streams'=>'yes', 'colorScheme'=>'light', 'showFaces'=>'yes', 'borderColor'=>'AAAAAA','enableOtherSocialButtons'=>'no', 'addThisVerticalStyle'=>'1', 'addThisPubId'=>'', 'header'=>'yes', 'creditOn'=>'no', 'pluginDisplayType'=>'like_box', 'layoutMode'=>'xfbml', 'pageURL'=>'http://www.facebook.com/pages/VivoCiticom-Joomla-Wordpress-Blogger-Drupal-DNN-Community/119691288064264', 'fblike_button_style'=>'standard', 'fblike_button_showFaces'=>'false','fblike_button_verb_to_display'=>'recommend','fblike_button_font'=>'arial', 'fblike_button_width'=>'292','fblike_button_colorScheme'=>'light') );
-		
+		$instance = wp_parse_args( (array) $instance, array('title'=>'', 'pageID'=>'119691288064264', 'height'=>'255', 'width'=>'292', 'connection'=>'10', 'streams'=>'yes', 'colorScheme'=>'light', 'showFaces'=>'yes', 'borderColor'=>'AAAAAA','enableOtherSocialButtons'=>'no', 'addThisVerticalStyle'=>'1', 'addThisPubId'=>'', 'enableTwitterButtons'=>'no', 'twitterButtonStyle'=>'127', 'twitterUsername'=>'', 'enableAfterOrBeforeFBLikeBox'=>'before', 'header'=>'yes', 'creditOn'=>'no', 'pluginDisplayType'=>'like_box', 'layoutMode'=>'xfbml', 'pageURL'=>'http://www.facebook.com/pages/VivoCiticom-Joomla-Wordpress-Blogger-Drupal-DNN-Community/119691288064264', 'fblike_button_style'=>'standard', 'fblike_button_showFaces'=>'false','fblike_button_verb_to_display'=>'recommend','fblike_button_font'=>'arial', 'fblike_button_width'=>'292','fblike_button_colorScheme'=>'light') );
 		
 		$title = htmlspecialchars($instance['title']);		
 		$pluginDisplayType = empty($instance['pluginDisplayType']) ? 'like_box' : $instance['pluginDisplayType'];
@@ -240,6 +292,12 @@ class FacebookLikeBoxWidget extends WP_Widget
 		$borderColor = empty($instance['borderColor']) ? 'AAAAAA' : $instance['borderColor'];
 		$enableOtherSocialButtons = empty($instance['enableOtherSocialButtons']) ? 'no' : $instance['enableOtherSocialButtons'];
 		$addThisVerticalStyle = empty($instance['addThisVerticalStyle']) ? '1' : $instance['addThisVerticalStyle'];
+		
+		$enableTwitterButtons = empty($instance['enableTwitterButtons']) ? 'no' : $instance['enableTwitterButtons'];
+		$twitterButtonStyle = empty($instance['twitterButtonStyle']) ? '127' : $instance['twitterButtonStyle'];
+		$twitterUsername = empty($instance['twitterUsername']) ? '' : $instance['twitterUsername'];
+		$enableAfterOrBeforeFBLikeBox = empty($instance['enableAfterOrBeforeFBLikeBox']) ? 'before' : $instance['enableAfterOrBeforeFBLikeBox'];
+		
 		$addThisPubId = empty($instance['addThisPubId']) ? '' : $instance['addThisPubId'];
 		$showFaces = empty($instance['showFaces']) ? 'yes' : $instance['showFaces'];
 		$header = empty($instance['header']) ? 'yes' : $instance['header'];
@@ -288,7 +346,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 <?php
 		echo '</select></label>';
 		echo '<hr/><p style="text-align:left;"><b>Like Box Setting</b></p>';
-		echo '<p style="text-align:left;"><i>Fill Page ID Or Page URL below:</i></p>';
+		echo '<p style="text-align:left;"><i><strong>Fill Page ID Or Page URL below:</strong></i></p>';
 		# Fill Page ID
 		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('pageID') . '">' . __('Facebook Page ID:') . ' <input style="width: 150px;" id="' . $this->get_field_id('pageID') . '" name="' . $this->get_field_name('pageID') . '" type="text" value="' . $pageID . '" /></label></p>';
 		# Fill Page URL
@@ -375,7 +433,7 @@ class FacebookLikeBoxWidget extends WP_Widget
 		echo '</select></label>';
 		
 		#Enable Other Social Network Settings Section
-		echo '<hr/><p style="text-align:left;"><b>Google+, Twitter, Pinterest Floating Buttons</b><br/>Powered By AddThis.com</p>';
+		echo '<hr/><p style="text-align:left;"><b>Google+, Twitter, Pinterest Floating Buttons Integration</b><br/>Powered By <a href="http://addthis.com" target="_blank">AddThis.com</a></p>';
 		# Fill Enable Other Social Buttons Selection
 		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('enableOtherSocialButtons') . '">' . __('Enable Other Social Buttons:') . ' <select name="' . $this->get_field_name('enableOtherSocialButtons')  . '" id="' . $this->get_field_id('enableOtherSocialButtons')  . '">"';
 ?>
@@ -387,15 +445,238 @@ class FacebookLikeBoxWidget extends WP_Widget
 		# Fill Social Buttons Style Selection
 		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('addThisVerticalStyle') . '">' . __('Choose Vertical Floating Style:') . ' <select name="' . $this->get_field_name('addThisVerticalStyle')  . '" id="' . $this->get_field_id('addThisVerticalStyle')  . '">"';
 ?>
-		<option value="1" <?php if ($enableOtherSocialButtons == '1') echo 'selected="yes"'; ?> >1 - Floating On The Left</option>
-		<option value="2" <?php if ($enableOtherSocialButtons == '2') echo 'selected="yes"'; ?> >2- Floating On The Right</option>				
-		<option value="3" <?php if ($enableOtherSocialButtons == '3') echo 'selected="yes"'; ?> >3 - Floating On The Left</option>				
+		<option value="1" <?php if ($addThisVerticalStyle == '1') echo 'selected="yes"'; ?> >Style 1 - Left</option>
+		<option value="2" <?php if ($addThisVerticalStyle == '2') echo 'selected="yes"'; ?> >Style 2 - Left</option>				
+		<option value="3" <?php if ($addThisVerticalStyle == '3') echo 'selected="yes"'; ?> >Style 3 - Left</option>				
+		<option value="4" <?php if ($addThisVerticalStyle == '4') echo 'selected="yes"'; ?> >Style 4 - Right</option>				
+		<option value="5" <?php if ($addThisVerticalStyle == '5') echo 'selected="yes"'; ?> >Style 5 - Right</option>				
+		<option value="6" <?php if ($addThisVerticalStyle == '6') echo 'selected="yes"'; ?> >Style 6 - Right</option>				
 <?php
 		echo '</select></label>';
 		
 		# AddThis Publishere Id
 		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('addThisPubId') . '">' . __('AddThis Pub Id:') . ' <input style="width: 100px;" id="' . $this->get_field_id('addThisPubId') . '" name="' . $this->get_field_name('addThisPubId') . '" type="text" value="' . $addThisPubId . '" /></label></p>';
 		
+		#Enable Twitter Signatures from Twithut.com
+		echo '<hr/><p style="text-align:left;"><b>Twitter Counter &amp; Twitter Signature Integration</b><br/>Powered By <a href="http://twithut.com" target="_blank">TwitHut.com</a></p>';
+		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('enableTwitterButtons') . '">' . __('Enable Twitter Signature & Counter:') . ' <select name="' . $this->get_field_name('enableTwitterButtons')  . '" id="' . $this->get_field_id('enableTwitterButtons')  . '">"';
+?>
+		<option value="no" <?php if ($enableTwitterButtons == 'no') echo 'selected="yes"'; ?> >No</option>				
+		<option value="yes" <?php if ($enableTwitterButtons == 'yes') echo 'selected="yes"'; ?> >Yes</option>	
+<?php
+		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('enableAfterOrBeforeFBLikeBox') . '">' . __('Display Before Or After Facebook Like Box:') . ' <select name="' . $this->get_field_name('enableAfterOrBeforeFBLikeBox')  . '" id="' . $this->get_field_id('enableAfterOrBeforeFBLikeBox')  . '">"';
+?>
+		<option value="before" <?php if ($enableAfterOrBeforeFBLikeBox == 'before') echo 'selected="yes"'; ?> >Before</option>				
+		<option value="after" <?php if ($enableAfterOrBeforeFBLikeBox == 'after') echo 'selected="yes"'; ?> >After</option>	
+<?php
+		echo '</select></label>';		
+		# Fill Twitter Username
+		echo '<p style="text-align:left;"><b>To display cool Twitter Signature, Twitter Counter &amp; Twitter QR Code you have to follow below steps:</b></p>';
+		echo '<p style="text-align:left;">1. Register for a free account at TwitHut.com and link your Twitter account via OAuth. For more details <a href="http://twithut.com" target="_blank">Register Here!</a></p>';
+		echo '<p style="text-align:left;">2. Fill in your Twitter username below:</p>';
+		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('twitterUsername') . '">' . __('Twitter Username:') . ' <input style="width: 100px;" id="' . $this->get_field_id('twitterUsername') . '" name="' . $this->get_field_name('twitterUsername') . '" type="text" value="' . $twitterUsername . '" /></label></p>';
+		echo '<p style="text-align:left;">3. Select Twitter Signature or Twitter Counter style below</p>';		
+		# Fill Twitter Buttons Style Selection
+		echo '<p style="text-align:right;"><label for="' . $this->get_field_name('twitterButtonStyle') . '">' . __('') . ' <select name="' . $this->get_field_name('twitterButtonStyle')  . '" id="' . $this->get_field_id('twitterButtonStyle')  . '">"';
+?>
+		<option value="127" <?php if ($twitterButtonStyle == '127') echo 'selected="yes"'; ?> >Counter 7 (150x90) - Free</option>
+		<option value="40" <?php if ($twitterButtonStyle == '40') echo 'selected="yes"'; ?> >Special 1 (160x200) - Free</option>
+		<option value="222" <?php if ($twitterButtonStyle == '222') echo 'selected="yes"'; ?> >QR Code Twitter URL (Free)</option>
+		<option value="121" <?php if ($twitterButtonStyle == '121') echo 'selected="yes"'; ?> >Counter 1 (150x90)</option>
+		<option value="122" <?php if ($twitterButtonStyle == '122') echo 'selected="yes"'; ?> >Counter 2 (150x90)</option>
+		<option value="123" <?php if ($twitterButtonStyle == '123') echo 'selected="yes"'; ?> >Counter 3 (150x90)</option>
+		<option value="124" <?php if ($twitterButtonStyle == '124') echo 'selected="yes"'; ?> >Counter 4 (150x90)</option>
+		<option value="125" <?php if ($twitterButtonStyle == '125') echo 'selected="yes"'; ?> >Counter 5 (150x90)</option>
+		<option value="126" <?php if ($twitterButtonStyle == '126') echo 'selected="yes"'; ?> >Counter 6 (150x90)</option>
+		<option value="128" <?php if ($twitterButtonStyle == '128') echo 'selected="yes"'; ?> >Counter 8 (150x90)</option>
+		<option value="129" <?php if ($twitterButtonStyle == '129') echo 'selected="yes"'; ?> >Counter 9 (150x90)</option>
+		<option value="130" <?php if ($twitterButtonStyle == '130') echo 'selected="yes"'; ?> >Counter 10 (150x90)</option>
+		<option value="131" <?php if ($twitterButtonStyle == '131') echo 'selected="yes"'; ?> >Counter 11 (150x90)</option>
+		<option value="132" <?php if ($twitterButtonStyle == '132') echo 'selected="yes"'; ?> >Counter 12 (150x90)</option>
+		<option value="42" <?php if ($twitterButtonStyle == '42') echo 'selected="yes"'; ?> >Special 2 (160x200)</option>
+		 <option value="43" <?php if ($twitterButtonStyle == '43') echo 'selected="yes"'; ?> >Special 3 (160x200)</option>
+		 <option value="44" <?php if ($twitterButtonStyle == '44') echo 'selected="yes"'; ?> >Special 4 (160x200)</option>
+		 <option value="45" <?php if ($twitterButtonStyle == '45') echo 'selected="yes"'; ?> >Special 5 (160x200)</option>
+		 <option value="46" <?php if ($twitterButtonStyle == '46') echo 'selected="yes"'; ?> >Special 6 (160x200)</option>
+		 <option value="47" <?php if ($twitterButtonStyle == '47') echo 'selected="yes"'; ?> >Special 7 (160x200)</option>
+		 <option value="48" <?php if ($twitterButtonStyle == '48') echo 'selected="yes"'; ?> >Special 8 (160x200)</option>
+		 <option value="49" <?php if ($twitterButtonStyle == '49') echo 'selected="yes"'; ?> >Special 9 (160x200)</option>
+		 <option value="50" <?php if ($twitterButtonStyle == '50') echo 'selected="yes"'; ?> >Special 10 (160x200)</option>
+		 <option value="51" <?php if ($twitterButtonStyle == '51') echo 'selected="yes"'; ?> >Special 11 (160x200)</option>
+		 <option value="52" <?php if ($twitterButtonStyle == '52') echo 'selected="yes"'; ?> >Special 12 (160x200)</option>
+		 <option value="53" <?php if ($twitterButtonStyle == '53') echo 'selected="yes"'; ?> >Special 13 (160x200)</option>
+		 <option value="54" <?php if ($twitterButtonStyle == '54') echo 'selected="yes"'; ?> >Special 14 (160x200)</option>
+		 <option value="55" <?php if ($twitterButtonStyle == '55') echo 'selected="yes"'; ?> >Special 15 (160x200)</option>
+		 <option value="56" <?php if ($twitterButtonStyle == '56') echo 'selected="yes"'; ?> >Special 16 (160x200)</option>
+		 <option value="57" <?php if ($twitterButtonStyle == '57') echo 'selected="yes"'; ?> >Special 17 (160x200)</option>
+		 <option value="58" <?php if ($twitterButtonStyle == '58') echo 'selected="yes"'; ?> >Special 18 (160x200)</option>
+		 <option value="59" <?php if ($twitterButtonStyle == '59') echo 'selected="yes"'; ?> >Special 19 (160x200)</option>
+		 <option value="60" <?php if ($twitterButtonStyle == '60') echo 'selected="yes"'; ?> >Special 20 (160x200)</option>
+		 <option value="61" <?php if ($twitterButtonStyle == '61') echo 'selected="yes"'; ?> >Special 21 (160x200)</option>
+		 <option value="62" <?php if ($twitterButtonStyle == '62') echo 'selected="yes"'; ?> >Special 22 (160x200)</option>
+		 <option value="63" <?php if ($twitterButtonStyle == '63') echo 'selected="yes"'; ?> >Special 23 (160x200)</option>
+		 <option value="64" <?php if ($twitterButtonStyle == '64') echo 'selected="yes"'; ?> >Special 24 (160x200)</option>
+		 <option value="65" <?php if ($twitterButtonStyle == '65') echo 'selected="yes"'; ?> >Special 25 (160x200)</option>
+		 <option value="66" <?php if ($twitterButtonStyle == '66') echo 'selected="yes"'; ?> >Special 26 (160x200)</option>
+		 <option value="67" <?php if ($twitterButtonStyle == '67') echo 'selected="yes"'; ?> >Special 27 (160x200)</option>
+		 <option value="68" <?php if ($twitterButtonStyle == '68') echo 'selected="yes"'; ?> >Special 28 (160x200)</option>
+		 <option value="69" <?php if ($twitterButtonStyle == '69') echo 'selected="yes"'; ?> >Special 29 (160x200)</option>
+		 <option value="70" <?php if ($twitterButtonStyle == '70') echo 'selected="yes"'; ?> >Special 30 (160x200)</option>
+		 <option value="71" <?php if ($twitterButtonStyle == '71') echo 'selected="yes"'; ?> >Special 31 (160x200)</option>
+		 <option value="72" <?php if ($twitterButtonStyle == '72') echo 'selected="yes"'; ?> >Special 32 (160x200)</option>
+		 <option value="73" <?php if ($twitterButtonStyle == '73') echo 'selected="yes"'; ?> >Special 33 (160x200)</option>
+		 <option value="74" <?php if ($twitterButtonStyle == '74') echo 'selected="yes"'; ?> >Special 34 (160x200)</option>
+		 <option value="75" <?php if ($twitterButtonStyle == '75') echo 'selected="yes"'; ?> >Special 35 (160x200)</option>
+		 <option value="76" <?php if ($twitterButtonStyle == '76') echo 'selected="yes"'; ?> >Special 36 (160x200)</option>
+		 <option value="77" <?php if ($twitterButtonStyle == '77') echo 'selected="yes"'; ?> >Special 37 (160x200)</option>
+		 <option value="78" <?php if ($twitterButtonStyle == '78') echo 'selected="yes"'; ?> >Special 38 (160x200)</option>
+		 <option value="79" <?php if ($twitterButtonStyle == '79') echo 'selected="yes"'; ?> >Special 39 (160x200)</option>
+		 <option value="80" <?php if ($twitterButtonStyle == '80') echo 'selected="yes"'; ?> >Special 40 (160x200)</option>
+		 <option value="81" <?php if ($twitterButtonStyle == '81') echo 'selected="yes"'; ?> >Special 41 (160x200)</option>
+		 <option value="82" <?php if ($twitterButtonStyle == '82') echo 'selected="yes"'; ?> >Special 42 (160x200)</option>
+		 <option value="83" <?php if ($twitterButtonStyle == '83') echo 'selected="yes"'; ?> >Special 43 (160x200)</option>
+		 <option value="84" <?php if ($twitterButtonStyle == '84') echo 'selected="yes"'; ?> >Special 44 (160x200)</option>
+		 <option value="85" <?php if ($twitterButtonStyle == '85') echo 'selected="yes"'; ?> >Special 45 (160x200)</option>
+		 <option value="86" <?php if ($twitterButtonStyle == '86') echo 'selected="yes"'; ?> >Special 46 (160x200)</option>
+		 <option value="87" <?php if ($twitterButtonStyle == '87') echo 'selected="yes"'; ?> >Special 47 (160x200)</option>
+		 <option value="88" <?php if ($twitterButtonStyle == '88') echo 'selected="yes"'; ?> >Special 48 (160x200)</option>
+		 <option value="89" <?php if ($twitterButtonStyle == '89') echo 'selected="yes"'; ?> >Special 49 (160x200)</option>
+		 <option value="90" <?php if ($twitterButtonStyle == '90') echo 'selected="yes"'; ?> >Special 50 (160x200)</option>
+		 <option value="93" <?php if ($twitterButtonStyle == '93') echo 'selected="yes"'; ?> >Modern 1 (400x150)</option>
+		 <option value="94" <?php if ($twitterButtonStyle == '94') echo 'selected="yes"'; ?> >Modern 2 (400x150)</option>
+		 <option value="95" <?php if ($twitterButtonStyle == '95') echo 'selected="yes"'; ?> >Modern 3 (400x150)</option>
+		 <option value="96" <?php if ($twitterButtonStyle == '96') echo 'selected="yes"'; ?> >Modern 4 (400x150)</option>
+		 <option value="97" <?php if ($twitterButtonStyle == '97') echo 'selected="yes"'; ?> >Modern 5 (400x150)</option>
+		 <option value="98" <?php if ($twitterButtonStyle == '98') echo 'selected="yes"'; ?> >Modern 6 (400x150)</option>
+		 <option value="99" <?php if ($twitterButtonStyle == '99') echo 'selected="yes"'; ?> >Modern 7 (400x150)</option>
+		 <option value="100" <?php if ($twitterButtonStyle == '100') echo 'selected="yes"'; ?> >Modern 8 (400x150)</option>
+		 <option value="101" <?php if ($twitterButtonStyle == '101') echo 'selected="yes"'; ?> >Modern 9 (400x150)</option>
+		 <option value="102" <?php if ($twitterButtonStyle == '102') echo 'selected="yes"'; ?> >Modern 10 (400x150)</option>
+		 <option value="103" <?php if ($twitterButtonStyle == '103') echo 'selected="yes"'; ?> >Modern 11 (400x150)</option>
+		 <option value="104" <?php if ($twitterButtonStyle == '104') echo 'selected="yes"'; ?> >Modern 12 (400x150)</option>
+		 <option value="105" <?php if ($twitterButtonStyle == '105') echo 'selected="yes"'; ?> >Modern 13 (400x150)</option>
+		 <option value="106" <?php if ($twitterButtonStyle == '106') echo 'selected="yes"'; ?> >Modern 14 (400x150)</option>
+		 <option value="107" <?php if ($twitterButtonStyle == '107') echo 'selected="yes"'; ?> >Modern 15 (400x150)</option>
+		 <option value="108" <?php if ($twitterButtonStyle == '108') echo 'selected="yes"'; ?> >Modern 16 (400x150)</option>
+		 <option value="109" <?php if ($twitterButtonStyle == '109') echo 'selected="yes"'; ?> >Modern 17 (400x150)</option>
+		 <option value="110" <?php if ($twitterButtonStyle == '110') echo 'selected="yes"'; ?> >Modern 18 (400x150)</option>
+		 <option value="111" <?php if ($twitterButtonStyle == '111') echo 'selected="yes"'; ?> >Modern 19 (400x150)</option>
+		 <option value="112" <?php if ($twitterButtonStyle == '112') echo 'selected="yes"'; ?> >Modern 20 (400x150)</option>
+		 <option value="113" <?php if ($twitterButtonStyle == '113') echo 'selected="yes"'; ?> >Modern 21 (400x150)</option>
+		 <option value="115" <?php if ($twitterButtonStyle == '114') echo 'selected="yes"'; ?> >Modern 22 (400x150)</option>
+		 <option value="116" <?php if ($twitterButtonStyle == '116') echo 'selected="yes"'; ?> >Modern 23 (400x150)</option>
+		 <option value="117" <?php if ($twitterButtonStyle == '117') echo 'selected="yes"'; ?> >Modern 24 (400x150)</option>
+		 <option value="118" <?php if ($twitterButtonStyle == '118') echo 'selected="yes"'; ?> >Modern 25 (400x150)</option>
+		 <option value="119" <?php if ($twitterButtonStyle == '119') echo 'selected="yes"'; ?> >Modern 26 (400x150)</option>
+		 <option value="120" <?php if ($twitterButtonStyle == '120') echo 'selected="yes"'; ?> >Modern 27 (400x150)</option>
+		 <option value="1" <?php if ($twitterButtonStyle == '1') echo 'selected="yes"'; ?> >Medium 1 (312x92)</option>
+		 <option value="2" <?php if ($twitterButtonStyle == '2') echo 'selected="yes"'; ?> >Medium 2 (312x92)</option>
+		 <option value="3" <?php if ($twitterButtonStyle == '3') echo 'selected="yes"'; ?> >Medium 3 (312x92)</option>
+		 <option value="4" <?php if ($twitterButtonStyle == '4') echo 'selected="yes"'; ?> >Medium 4 (312x92)</option>
+		 <option value="5" <?php if ($twitterButtonStyle == '5') echo 'selected="yes"'; ?> >Medium 5 (312x92)</option>
+		 <option value="6" <?php if ($twitterButtonStyle == '6') echo 'selected="yes"'; ?> >Medium 6 (312x92)</option>
+		 <option value="7" <?php if ($twitterButtonStyle == '7') echo 'selected="yes"'; ?> >Medium 7 (312x92)</option>
+		 <option value="8" <?php if ($twitterButtonStyle == '8') echo 'selected="yes"'; ?> >Medium 8 (312x92)</option>
+		 <option value="9" <?php if ($twitterButtonStyle == '9') echo 'selected="yes"'; ?> >Medium 9 (312x92)</option>
+		 <option value="10" <?php if ($twitterButtonStyle == '10') echo 'selected="yes"'; ?> >Medium 10 (312x92)</option>
+		 <option value="11" <?php if ($twitterButtonStyle == '11') echo 'selected="yes"'; ?> >Medium 11 (312x92)</option>
+		 <option value="12" <?php if ($twitterButtonStyle == '12') echo 'selected="yes"'; ?> >Medium 12 (312x92)</option>
+		 <option value="13" <?php if ($twitterButtonStyle == '13') echo 'selected="yes"'; ?> >Medium 13 (312x92)</option>
+		 <option value="14" <?php if ($twitterButtonStyle == '14') echo 'selected="yes"'; ?> >Medium 14 (312x92)</option>
+		 <option value="15" <?php if ($twitterButtonStyle == '15') echo 'selected="yes"'; ?> >Medium 15 (312x92)</option>
+		 <option value="16" <?php if ($twitterButtonStyle == '16') echo 'selected="yes"'; ?> >Medium 16 (312x92)</option>
+		 <option value="17" <?php if ($twitterButtonStyle == '17') echo 'selected="yes"'; ?> >Medium 17 (312x92)</option>
+		 <option value="18" <?php if ($twitterButtonStyle == '18') echo 'selected="yes"'; ?> >Medium 18 (312x92)</option>
+		 <option value="19" <?php if ($twitterButtonStyle == '19') echo 'selected="yes"'; ?> >Medium 19 (312x92)</option>
+		 <option value="20" <?php if ($twitterButtonStyle == '20') echo 'selected="yes"'; ?> >Medium 20 (312x92)</option>
+		 <option value="21" <?php if ($twitterButtonStyle == '21') echo 'selected="yes"'; ?> >Medium 21 (312x92)</option>
+		 <option value="22" <?php if ($twitterButtonStyle == '22') echo 'selected="yes"'; ?> >Medium 22 (312x92)</option>
+		 <option value="23" <?php if ($twitterButtonStyle == '23') echo 'selected="yes"'; ?> >Medium 23 (312x92)</option>
+		 <option value="24" <?php if ($twitterButtonStyle == '24') echo 'selected="yes"'; ?> >Medium 24 (312x92)</option>
+		 <option value="25" <?php if ($twitterButtonStyle == '25') echo 'selected="yes"'; ?> >Medium 25 (312x92)</option>
+		<option value="26" <?php if ($twitterButtonStyle == '26') echo 'selected="yes"'; ?> >Medium 26 (312x92)</option>
+		 <option value="27" <?php if ($twitterButtonStyle == '27') echo 'selected="yes"'; ?> >Medium 27 (312x92)</option>
+		 <option value="28" <?php if ($twitterButtonStyle == '28') echo 'selected="yes"'; ?> >Medium 28 (312x92)</option>
+		 <option value="29" <?php if ($twitterButtonStyle == '29') echo 'selected="yes"'; ?> >Medium 29 (312x92)</option>
+		 <option value="30" <?php if ($twitterButtonStyle == '30') echo 'selected="yes"'; ?> >Medium 30 (312x92)</option>		 
+		 <option value="223" <?php if ($twitterButtonStyle == '223') echo 'selected="yes"'; ?> >Premium Badge 1(131x182)</option>
+		 <option value="224" <?php if ($twitterButtonStyle == '224') echo 'selected="yes"'; ?> >Premium Badge 2(131x182)</option>
+		 <option value="225" <?php if ($twitterButtonStyle == '225') echo 'selected="yes"'; ?> >Premium Badge 3(131x182)</option>
+		 <option value="226" <?php if ($twitterButtonStyle == '226') echo 'selected="yes"'; ?> >Premium Badge 4(131x182)</option>
+		 <option value="227" <?php if ($twitterButtonStyle == '227') echo 'selected="yes"'; ?> >Premium Badge 5(131x182)</option>
+		 <option value="228" <?php if ($twitterButtonStyle == '228') echo 'selected="yes"'; ?> >Premium Badge 6(131x182)</option>
+		 <option value="229" <?php if ($twitterButtonStyle == '229') echo 'selected="yes"'; ?> >Premium Badge 7(131x182)</option>
+		 <option value="230" <?php if ($twitterButtonStyle == '230') echo 'selected="yes"'; ?> >Premium Badge 8(131x182)</option>
+		 <option value="231" <?php if ($twitterButtonStyle == '231') echo 'selected="yes"'; ?> >Premium Badge 9(131x182)</option>
+		 <option value="232" <?php if ($twitterButtonStyle == '232') echo 'selected="yes"'; ?> >Premium Badge 10(131x182)</option>
+		<option value="220" <?php if ($twitterButtonStyle == '220') echo 'selected="yes"'; ?> >Premium (iPhone Model)</option>
+		<option value="211" <?php if ($twitterButtonStyle == '211') echo 'selected="yes"'; ?> >Premium (iPOD Model 1)</option>
+		<option value="212" <?php if ($twitterButtonStyle == '212') echo 'selected="yes"'; ?> >Premium (iPOD Model 2)</option>
+		<option value="213" <?php if ($twitterButtonStyle == '213') echo 'selected="yes"'; ?> >Premium (iPOD Model 3)</option>
+		<option value="214" <?php if ($twitterButtonStyle == '214') echo 'selected="yes"'; ?> >Premium (iPOD Model 4)</option>
+		<option value="215" <?php if ($twitterButtonStyle == '215') echo 'selected="yes"'; ?> >Premium (iPOD Model 5)</option>
+		<option value="216" <?php if ($twitterButtonStyle == '216') echo 'selected="yes"'; ?> >Premium (iPOD Model 6)</option>
+		<option value="217" <?php if ($twitterButtonStyle == '217') echo 'selected="yes"'; ?> >Premium (iPOD Model 7)</option>
+		<option value="218" <?php if ($twitterButtonStyle == '218') echo 'selected="yes"'; ?> >Premium (iPOD Model 8)</option>
+		<option value="219" <?php if ($twitterButtonStyle == '219') echo 'selected="yes"'; ?> >Premium (iPOD Model 9)</option>		
+		<option value="233" <?php if ($twitterButtonStyle == '233') echo 'selected="yes"'; ?> >Premium Bubble Up 1(248x220)</option>
+		<option value="234" <?php if ($twitterButtonStyle == '234') echo 'selected="yes"'; ?> >Premium Bubble Up 2(248x220)</option>
+		<option value="235" <?php if ($twitterButtonStyle == '235') echo 'selected="yes"'; ?> >Premium Bubble Up 3(248x220)</option>
+		<option value="236" <?php if ($twitterButtonStyle == '236') echo 'selected="yes"'; ?> >Premium Bubble Up 4(248x220)</option>		 
+		<option value="164" <?php if ($twitterButtonStyle == '164') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="165" <?php if ($twitterButtonStyle == '165') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="166" <?php if ($twitterButtonStyle == '166') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="167" <?php if ($twitterButtonStyle == '167') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="168" <?php if ($twitterButtonStyle == '168') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="169" <?php if ($twitterButtonStyle == '169') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="170" <?php if ($twitterButtonStyle == '170') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="171" <?php if ($twitterButtonStyle == '171') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="172" <?php if ($twitterButtonStyle == '172') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="173" <?php if ($twitterButtonStyle == '173') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="174" <?php if ($twitterButtonStyle == '174') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="176" <?php if ($twitterButtonStyle == '176') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="177" <?php if ($twitterButtonStyle == '177') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="178" <?php if ($twitterButtonStyle == '178') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="179" <?php if ($twitterButtonStyle == '179') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="180" <?php if ($twitterButtonStyle == '180') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="181" <?php if ($twitterButtonStyle == '181') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="182" <?php if ($twitterButtonStyle == '182') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="183" <?php if ($twitterButtonStyle == '183') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="184" <?php if ($twitterButtonStyle == '184') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="185" <?php if ($twitterButtonStyle == '185') echo 'selected="yes"'; ?> >Premium (172x326)</option>
+		<option value="186" <?php if ($twitterButtonStyle == '186') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="187" <?php if ($twitterButtonStyle == '187') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="188" <?php if ($twitterButtonStyle == '188') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="189" <?php if ($twitterButtonStyle == '189') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="190" <?php if ($twitterButtonStyle == '190') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="191" <?php if ($twitterButtonStyle == '191') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="192" <?php if ($twitterButtonStyle == '192') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="193" <?php if ($twitterButtonStyle == '193') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="194" <?php if ($twitterButtonStyle == '194') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="195" <?php if ($twitterButtonStyle == '195') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="196" <?php if ($twitterButtonStyle == '196') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="197" <?php if ($twitterButtonStyle == '197') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="198" <?php if ($twitterButtonStyle == '198') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="199" <?php if ($twitterButtonStyle == '199') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="200" <?php if ($twitterButtonStyle == '200') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="201" <?php if ($twitterButtonStyle == '201') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="202" <?php if ($twitterButtonStyle == '202') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="203" <?php if ($twitterButtonStyle == '203') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="204" <?php if ($twitterButtonStyle == '204') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="205" <?php if ($twitterButtonStyle == '205') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="206" <?php if ($twitterButtonStyle == '206') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="207" <?php if ($twitterButtonStyle == '207') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="208" <?php if ($twitterButtonStyle == '208') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="209" <?php if ($twitterButtonStyle == '209') echo 'selected="yes"'; ?> >Premium (320x252)</option>
+		<option value="210" <?php if ($twitterButtonStyle == '210') echo 'selected="yes"'; ?> >Premium (320x252)</option>		
+<?php
+		echo '</select></label>';
+		
+		# Twitter Username
+		echo '<p style="text-align:right;"></p>';
+		
+		#Follow our News
+		echo '<hr/><p style="text-align:left;"><b>Follow Us or Like US:</b></p>';
 		echo '<p style="text-align:left;"><a title="Join Us @Facebook" href="http://www.facebook.com/pages/VivoCiticom-Joomla-Wordpress-Blogger-Drupal-DNN-Community/119691288064264" target="_blank"><img src="http://vivociti.com/images/stories/facebook_16x16.png" border="0"></a>&nbsp;<a href="https://plus.google.com/100723813888588053339?prsrc=3" style="text-decoration:none;"><img src="https://ssl.gstatic.com/images/icons/gplus-16.png" alt="" style="border:0;width:16px;height:16px;"/></a>&nbsp;<a title="Follow Us @Twitter" href="http://twitter.com/vivociti" target="_blank"><img src="http://vivociti.com/images/stories/twitter_16x16.png" border="0"></a>&nbsp;<a title="Follow Us @Digg" href="http://digg.com/vivoc" target="_blank"><img src="http://vivociti.com/images/stories/digg_16x16.png" border="0"></a>&nbsp;<a title="Follow Us @StumbleUpon" href="http://www.stumbleupon.com/stumbler/vivociti/" target="_blank"><img src="http://vivociti.com/images/stories/stumbleupon_16x16.png" border="0"></a>&nbsp;<a title="Follow Our RSS" href="http://feeds2.feedburner.com/vivociti" target="_blank"><img src="http://vivociti.com/images/stories/feed_16x16.png" border="0"></a></p>';
 		echo '<p/>';
 		echo '<hr/>';
